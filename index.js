@@ -66,7 +66,7 @@ function constructWOFF(WOFFHeader, WOFFTableDir, WOFFTableData, WOFFSize) {
 function fourByteAlignedBuffer(buf, len) {
     var alignedLen = fourByteAlign(len);
     //console.log("long aligned length: " + alignedLen);
-    var woffData = new Buffer(alignedLen);
+    var woffData = Buffer.alloc(alignedLen);
     var zeroPaddedLen = alignedLen - buf.length;
     for (var i = 0; i < buf.length; ++i) {
         //console.log(buf[i]);
@@ -102,7 +102,7 @@ function tagComparison(entry1, entry2) {
 function constructWOFFHeader(flavor, woffLen, numTables, totalSfntSize) {
     var WOFF_HEADER_LENGTH = 44;
     var WOFF_SIGNATURE = 0x774F4646;
-    var WOFFHeader = new Buffer(WOFF_HEADER_LENGTH);
+    var WOFFHeader = Buffer.alloc(WOFF_HEADER_LENGTH);
 
     WOFFHeader.writeUInt32BE(WOFF_SIGNATURE,0); //Woff Signature
     WOFFHeader.writeUInt32BE(flavor,4); //Flavor
@@ -124,7 +124,7 @@ function constructWOFFHeader(flavor, woffLen, numTables, totalSfntSize) {
  * converter is based on http://people.mozilla.org/~jkew/woff/woff-2009-09-16.html
  * */
 function sfnt2woff(sfnt) {
-    var sfntBuffer = new Buffer(sfnt);
+    var sfntBuffer = Buffer.from(sfnt);
     var tableDirectory = [];
 
     var SFNT_TABLE_DIR_SIZE = 16; /* 4byte for each tag, checksum, offset, length */
@@ -163,7 +163,7 @@ function sfnt2woff(sfnt) {
     var woffTableSize = numTables * WOFF_TABLE_DIR_SIZE;
     var woffTableOffset = WOFF_HEADER_LENGTH + woffTableSize; //table dir field starts right after header field.
 
-    var WOFFTableDir = new Buffer(woffTableSize);
+    var WOFFTableDir = Buffer.alloc(woffTableSize);
     var WOFFTableData = []; //contains all the font data for every table.
 
 
@@ -222,7 +222,7 @@ function sfnt2woff(sfnt) {
 }
 /* Converts Woff to its original format (TTF or OTF) */
 function woff2sfnt(woff) {
-    var woffBuffer = new Buffer(woff);
+    var woffBuffer = Buffer.from(woff);
     var tableDirectory = [];
 
     var SFNT_HEADER_LENGTH = 12;
@@ -260,7 +260,7 @@ function woff2sfnt(woff) {
     /* This might not be needed, sfnt directory should already be sorted by tag. */
     tableDirectory = tableDirectory.sort(tagComparison);
 
-    var SFNTTableDir = new Buffer(sfntTableSize);
+    var SFNTTableDir = Buffer.alloc(sfntTableSize);
     var SFNTTableData = []; //contains all the font data for every table.
     /* decompress the */
     for (i = 0; i < numTables; ++i) {
@@ -324,7 +324,7 @@ function constructSFNT(SFNTHeader, SFNTTableDir, SFNTTableData) {
 /*Constructs SFNT Header */
 function constructSFNTHeader(sfntVersion, numTables, searchRange, entrySelector, rangeShift) {
     var SFNT_HEADER_LENGTH = 12;
-    var SFNTHeader = new Buffer(SFNT_HEADER_LENGTH);
+    var SFNTHeader = Buffer.alloc(SFNT_HEADER_LENGTH);
     SFNTHeader.writeInt32BE(sfntVersion,0); //SFNT Version
     SFNTHeader.writeUInt16BE(numTables,4); //SFNT Number of Tables
     SFNTHeader.writeUInt16BE(searchRange,6); //SFNT Search Range (Maximum power of 2 <= numTables) x 16.
@@ -335,7 +335,7 @@ function constructSFNTHeader(sfntVersion, numTables, searchRange, entrySelector,
 
 /* inflate function returns uint8array/arrayBuffer, this helper converts it back to buffer */
 function toBuffer(arrBuf) {
-    var buf = new Buffer(arrBuf.byteLength);
+    var buf = Buffer.alloc(arrBuf.byteLength);
     var view = new Uint8Array(arrBuf);
     for (var i = 0; i < buf.length; ++i) {
         buf[i] = view[i];

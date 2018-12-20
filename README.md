@@ -1,5 +1,7 @@
 SFNT to WOFF / WOFF to SFNT Converter
 ====================
+forked from https://github.com/odemiral/woff2sfnt-sfnt2woff
+
 Node.js font converter capable of converting SFNT ([TrueType](https://en.wikipedia.org/wiki/TrueType), [OpenType](https://en.wikipedia.org/wiki/OpenType)) font files to [WOFF](https://en.wikipedia.org/wiki/Web_Open_Font_Format)
 
 
@@ -12,6 +14,20 @@ To convert fonts from **woff2sfnt** invoke the script from the command line:
 To convert fonts from sfnt2woff invoke the script from the command line:
 
     sfnt2woff.js input.woff output.otf
+
+
+Import as module for node.js, convert otf/ttf to woff
+`npm install woff2sfnt-sfnt2woff --save`
+
+in javascript file:  
+````
+const {toWoff, toSfnt} = require('woff2sfnt-sfnt2woff');
+const fs = require('fs');
+
+const input = fs.readFileSync('fontfile.otf');
+const woff = toWoff(input);
+fs.writeFileSync('output.woff', woff);
+````
 
 
 Dependencies

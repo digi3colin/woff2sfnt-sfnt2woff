@@ -1,6 +1,6 @@
 {
   "name": "woff2sfnt-sfnt2woff",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "SFNT to WOFF / WOFF to SFNT Converter",
   "main": "index.js",
   "scripts": {
