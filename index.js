@@ -79,17 +79,6 @@ function fourByteAlignedBuffer(buf, len) {
     return woffData;
 }
 
-//TODO:DEPRICATED! DELETE THIS FUNCTION
-/* Converts Buffer to Uint8Array */
-function toArrayBuffer(buf) {
-    var arrBuf = new ArrayBuffer(buf.length);
-    var view = new Uint8Array(arrBuf);
-    for (var i = 0; i < buf.length; ++i) {
-        view[i] = buf[i];
-    }
-    return arrBuf;
-}
-
 /*The sfnt based font specifications require that the table directory entries are sorted in ascending order of tag value.
 * comparator function for sort() function.
 * */
